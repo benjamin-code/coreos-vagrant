@@ -18,11 +18,40 @@ Mailing list: [coreos-dev](https://groups.google.com/forum/#!forum/coreos-dev)
 2) Clone this project and get it running!
 
 ```
-git clone https://github.com/coreos/coreos-vagrant/
+git clone https://github.com:benjamin-code/coreos-vagrant.git
 cd coreos-vagrant
 ```
+3) Modify config.rb and user-data
+config.rb
+```
+# Size of the CoreOS cluster created by Vagrant
+$num_instances=3
+# Official CoreOS channel from which updates should be downloaded
+$update_channel='stable'
+```
 
-3) Startup and SSH
+user-data
+```
+curl  http://discovery.etcd.io/new
+```
+```
+coreos:
+  etcd:
+      # generate a new token for each unique cluster from https://discovery.etcd.io/new
+      # WARNING: replace each time you 'vagrant destroy'
+      discovery: https://discovery.etcd.io/5480377e1e51f25e11dd78f525ba1122
+      addr: $public_ipv4:4001
+      peer-addr: $public_ipv4:7001
+  fleet:
+      public-ip: $public_ipv4
+  units:
+    - name: etcd.service
+      command: start
+    - name: fleet.service
+      command: start
+```	  
+
+4) Startup and SSH
 
 There are two "providers" for Vagrant with slightly different instructions.
 Follow one of the following two options:
@@ -58,7 +87,7 @@ vagrant ssh
 ``vagrant ssh`` connects you to the virtual machine.
 Configuration is stored in the directory so you can always return to this machine by executing vagrant ssh from the directory where the Vagrantfile was located.
 
-4) Get started [using CoreOS][using-coreos]
+5) Get started [using CoreOS][using-coreos]
 
 [virtualbox]: https://www.virtualbox.org/
 [vagrant]: https://www.vagrantup.com/downloads.html
