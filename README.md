@@ -22,6 +22,7 @@ git clone https://github.com:benjamin-code/coreos-vagrant.git
 cd coreos-vagrant
 ```
 3) Modify config.rb and user-data
+
 config.rb
 ```
 # Size of the CoreOS cluster created by Vagrant
